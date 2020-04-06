@@ -104,31 +104,32 @@ void CNeural::update(int modelOrder, unsigned int* times, float* signal, int len
 	my_model.add_layer(std::shared_ptr<NeuronLayer>(new LinearLayer(id2, dimension)));*/
 	//my_model.add_layer(std::shared_ptr<NeuronLayer>(new LinearLayer(7*id1, 1)));
 
-	FILE* f = fopen("neural_model", "r");
+	FILE* f = fopen("data/start_model", "r");
 	my_model.load(f);
 	fclose(f);
 	my_model.pop_layer();
 	my_model.add_layer(std::shared_ptr<NeuronLayer>(new LinearLayer(25, dimension)));
 	my_model.set_output_size(dimension);
 
+	int batch_size = numSamples;
+	std::vector<double> x;
+	std::vector<double> y;
+	x.reserve(batch_size);
+	y.reserve(batch_size);
+	for (int j = 0; j < batch_size; ++j) {
+		int r = j;//rand() % numSamples;
+		x.push_back(sampleArray[r].t);
+		y.insert(y.end(), sampleArray[r].v.begin(), sampleArray[r].v.end());
+	}
+
 	double err;
-	ofstream myfileerr("err.txt");
-	for (int i = 0; i < 200; ++i) {
+	std::ofstream myfileerr("err.txt");
+	for (int i = 0; i < 100000; ++i) {
 		std::cerr << "iteration " << i << std::endl;
-		int batch_size = 30;
-		std::vector<double> x;
-		std::vector<double> y;
-		x.reserve(batch_size);
-		y.reserve(batch_size);
-		for (int j = 0; j < batch_size; ++j) {
-			int r = rand() % numSamples;
-			x.push_back(sampleArray[r].t);
-			y.insert(y.end(), sampleArray[r].v.begin(), sampleArray[r].v.end());
-		}
 		err = my_model.forward(x, y);
 		myfileerr << err << std::endl;
 		my_model.backward1();
-		my_model.step1(1E-1);
+		my_model.step1(1E-2);
 		/*if (i == 50000) {
 			my_model.simplify();
 		}*/

@@ -1,7 +1,7 @@
 SOURCES = $(wildcard *.cpp) $(wildcard neural/*.cpp)
 OBJECTS = $(SOURCES:.cpp=.o)
 DEPS = $(SOURCES:%.cpp=%.d)
-TARGET = neural
+TARGET = neural_network
 
 CFLAGS = -std=gnu++14 -O2 -Wall
 LFLAGS = -lm -O2

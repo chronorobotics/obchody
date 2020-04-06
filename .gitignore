@@ -1,3 +1,5 @@
 *.o
 *.d
-neural
+neural_network
+err.txt
+results/predictions.txt

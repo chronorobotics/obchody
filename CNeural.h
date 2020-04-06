@@ -8,7 +8,6 @@
 #include <string.h>
 #include <stdint.h>
 #include <vector>
-#include "CTemporal.h"
 
 #include "neural/neuronmodel.h"
 
